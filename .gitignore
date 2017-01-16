@@ -21,3 +21,7 @@
 .byebug_history
 
 OUTLINE.md
+
+# Ignore dev_env
+dev_env
+config/database.yml
