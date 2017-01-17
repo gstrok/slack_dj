@@ -16,11 +16,17 @@ class SkipVideo
   #
   def call
     if context.dj.player.stopped?
-      context.fail!
-      context.errors = "Sorry but no videos are playing now."
+      # add code
+      if context.dj.add_related(context.user)
+        context.message = "Autoplaying.."
+        context.dj.new_video_added!
+      else
+        context.errors = "Failed getting related video."
+        context.fail!
+      end
     else
-      context.dj.switch!
       context.message = "That video was skipped!"
+      context.dj.switch!
     end
   end
 

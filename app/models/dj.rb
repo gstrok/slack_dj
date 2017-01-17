@@ -30,6 +30,22 @@ class DJ
     player.video
   end
 
+  def add_related(user)
+    last = playlist.last_played(1).take
+    #search = Yt::Video.new id: last.youtube_id
+    search = Yt::Collections::Videos.new
+    related = search.where( relatedToVideoId: last.youtube_id ).first
+    if related.present?
+      playlist.add_video!(
+        title: related.title,
+        url: "https://www.youtube.com/watch?v=#{related.id}",
+        user: user
+      )
+    else
+      return false
+    end
+  end
+
   def start!
     if playlist.any_unplayed?
       player.play!(video_selector.start)
@@ -46,7 +62,8 @@ class DJ
     if playlist.any_unplayed?
       player.switch!(video_selector.next)
     else
-      stop!
+      add_related(user_rota.current_user)
+      player.stop! and player.play!( Video.next_for(user_rota.current_user) )
     end
   end
 
@@ -56,4 +73,3 @@ class DJ
     @video_selector ||= VideoSelector.new(playlist, user_rota)
   end
 end
-

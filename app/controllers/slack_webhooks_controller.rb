@@ -7,10 +7,10 @@ class SlackWebhooksController < ApplicationController
   def create
     result = operation.call(create_params)
     if result.success?
-      render text: result.message, status: :created
+      render plain: result.message, status: :created
     else
       Rails.logger.error { "#{result.errors}" }
-      render text: result.errors, status: :unprocessable_entity
+      render plain: result.errors, status: :unprocessable_entity
     end
   end
 
