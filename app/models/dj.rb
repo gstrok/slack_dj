@@ -41,6 +41,7 @@ class DJ
         url: "https://www.youtube.com/watch?v=#{related.id}",
         user: user
       )
+      return related.title
     else
       return false
     end
@@ -62,8 +63,9 @@ class DJ
     if playlist.any_unplayed?
       player.switch!(video_selector.next)
     else
-      add_related(user_rota.current_user)
-      player.stop! and player.play!( Video.next_for(user_rota.current_user) )
+      user_rota.advance_to_next_turn
+      video_title = add_related(user_rota.current_user)
+      video_title if player.stop! and player.play!( Video.next_for(user_rota.current_user) )
     end
   end
 

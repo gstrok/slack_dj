@@ -16,7 +16,6 @@ class SkipVideo
   #
   def call
     if context.dj.player.stopped?
-      # add code
       if context.dj.add_related(context.user)
         context.message = "Autoplaying.."
         context.dj.new_video_added!
@@ -25,8 +24,13 @@ class SkipVideo
         context.fail!
       end
     else
-      context.message = "That video was skipped!"
-      context.dj.switch!
+      current_video = context.dj.current_video
+      puts current_video
+      context.message = "Skipping #{ current_video.title }!"
+      next_title = context.dj.switch!
+      if next_title
+        context.message = [ context.message, "Playing #{ next_title }" ].join(" ")
+      end
     end
   end
 

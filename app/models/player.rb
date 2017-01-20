@@ -48,6 +48,6 @@ class Player < ApplicationRecord
   end
 
   def switch!(video)
-    true if stop! and play!(video)
+    video.title if stop! and play!(video)
   end
 end
