@@ -14,6 +14,11 @@ class PlayerController < ApplicationController
   def welcome
   end
 
+  def clear
+    Video.played.delete_all
+    render plain: "Cleared played videos"
+  end
+
   private
 
   def load_team

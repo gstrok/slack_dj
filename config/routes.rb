@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get '/', to: 'player#welcome'
   get 'test', to: 'player#test'
   get 'player', to: 'player#show', as: :player
+  get 'player/clear', to: 'player#clear'
 
   # config/routes.rb
   mount ActionCable.server => "/cable"
