@@ -23,7 +23,7 @@ class DJ
   end
 
   def playing?
-    player.playing?
+    player.playing? and player.video.present?
   end
 
   def current_video

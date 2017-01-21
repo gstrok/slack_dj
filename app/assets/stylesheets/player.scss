@@ -2,8 +2,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+* { box-sizing: border-box; }
+
 html, body {
 	height: 100%;
+	overflow: hidden;
 }
 
 .container {
@@ -14,6 +17,23 @@ html, body {
 
 .player-wrapper {
 	margin: auto;
+}
+
+.video-background {
+	background: #000;
+	position: fixed;
+	top: 0; right: 0; bottom: 0; left: 0;
+	z-index: -99;
+}
+
+.video-foreground,
+.video-background iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
 }
 
 .alert {
