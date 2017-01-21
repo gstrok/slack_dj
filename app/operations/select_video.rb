@@ -7,7 +7,7 @@ class SelectVideo
   include Interactor
 
   def call
-    r = Redis.new
+    r = Redis.new(:port => ENV.fetch('REDIS_PORT') || 6379 )
     user_key = context.user.search_key
     video_data = r.lindex user_key, idx
     if video_data.present?

@@ -7,7 +7,7 @@ class ListMyVideos
   include Interactor
 
   def call
-    r = Redis.new
+    r = Redis.new(:port => ENV.fetch('REDIS_PORT') || 6379 )
     user_key = context.user.search_key
     videos = r.lrange user_key, 0, -1
     if videos.any?

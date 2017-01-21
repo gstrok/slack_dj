@@ -18,7 +18,7 @@ class FindVideo
   def call
     videos = search_youtube
     if videos.any?
-      r = Redis.new
+      r = Redis.new(:port => ENV.fetch('REDIS_PORT') || 6379 )
       user_key = context.user.search_key
       # delete current users video list
       r.del user_key
