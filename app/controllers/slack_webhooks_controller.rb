@@ -22,7 +22,8 @@ class SlackWebhooksController < ApplicationController
       user: user,
       playlist: playlist,
       dj: dj,
-      command: params['text']
+      command: params['text'],
+      redis_instance: redis_instance
     }
   end
 
@@ -51,6 +52,12 @@ class SlackWebhooksController < ApplicationController
   def operation
     @_operation = commands.detect {|c| c.match?(params['text']) }
   end
+
+ def redis_instance
+   port = ENV.fetch('REDIS_PORT') rescue 6379
+   password = ENV.fetch('REDIS_PASS') rescue nil
+   Redis.new( :port => port, :password => password )
+ end
 
   def commands
     [
