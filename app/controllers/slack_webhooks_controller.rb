@@ -54,9 +54,8 @@ class SlackWebhooksController < ApplicationController
   end
 
  def redis_instance
-   port = ENV.fetch('REDIS_PORT') rescue 6379
-   password = ENV.fetch('REDIS_PASS') rescue nil
-   Redis.new( :port => port, :password => password )
+   redis_url = ENV.fetch('REDISTOGO_URL') rescue nil
+   Redis.new( :url => redis_url )
  end
 
   def commands
