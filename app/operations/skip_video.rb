@@ -26,7 +26,7 @@ class SkipVideo
     else
       current_video = context.dj.current_video
       puts current_video
-      context.message = "Skipping #{ current_video.title }!"
+      context.message = "Skipping!"
       next_title = context.dj.switch!
       if next_title
         context.message = [ context.message, "Playing #{ next_title }" ].join(" ")
