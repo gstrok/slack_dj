@@ -31,7 +31,7 @@ class DJ
   end
 
   def pending_videos
-    Video.pending.take(10)
+    Video.pending
   end
 
   def add_related(user)

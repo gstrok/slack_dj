@@ -22,7 +22,7 @@ class Video < ApplicationRecord
   end
 
   def self.pending
-    unplayed.oldest_first
+    unplayed.oldest_first.take(5)
   end
 
   def self.played

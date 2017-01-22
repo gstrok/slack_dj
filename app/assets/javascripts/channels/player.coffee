@@ -24,8 +24,8 @@
 
   pending: (videos)->
     list = $("#pending_videos");
+    videoInfo = $('.video-info');
+    videoInfo.show();
     list.empty();
-    first = videos.shift();
-    list.append('<li><strong>' + first.title + '</strong></li>')
     for v in videos
       list.append('<li>' + v.title + '</li>')

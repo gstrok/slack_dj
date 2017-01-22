@@ -48,6 +48,9 @@ class Player < ApplicationRecord
   end
 
   def switch!(video)
-    video.title if stop! and play!(video)
+    if stop! and play!(video)
+      Cable.broadcast 'player_channel', pendingVideos: Video.pending
+      video.title
+    end
   end
 end
