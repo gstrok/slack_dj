@@ -30,6 +30,10 @@ class DJ
     player.video
   end
 
+  def pending_videos
+    Video.pending.take(10)
+  end
+
   def add_related(user)
     last = playlist.last_played(1).take
     #search = Yt::Video.new id: last.youtube_id

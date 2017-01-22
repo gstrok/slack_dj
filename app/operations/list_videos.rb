@@ -6,7 +6,7 @@ class ListVideos
   include Interactor
 
   def call
-    unplayed = context.dj.playlist.videos.unplayed.oldest_first
+    unplayed = context.dj.playlist.videos.pending.take(10)
     if unplayed.any?
       message = []
       unplayed.each do |video, idx|

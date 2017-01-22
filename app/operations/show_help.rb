@@ -30,11 +30,20 @@ Watch your teams videos here...
 Play a video via its youtube url
 /dj play http://youtube.com....
 
-Find a video by artist and name and play it
-/dj find michael jackson thriller
+Find videos by artist and name
+/dj find george michael last christmas
+
+Add the video from search results to the playlist
+/dj select 2
+
+Display videos from last serach(valid only for 60 seconds)
+/dj mylist
 
 Skip the currently playing video
 /dj skip
+
+Display videos in playlist
+/dj list
 
 Display previously played videos
 /dj history

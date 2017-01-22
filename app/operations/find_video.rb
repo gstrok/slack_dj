@@ -29,8 +29,8 @@ class FindVideo
         r.rpush user_key, video_obj.to_json
         message.push [ idx, video.title ].join(" - ")
       end
-      r.expire user_key, 60
-      message.push "NOTICE: This message will be automatically destroyed in 60 seconds"
+      r.expire user_key, 60 unless Rails.env.development?
+      message.push "THIS MESSAGE WILL BE DESTROYED IN 60 SECONDS"
       context.message = message.join "\n"
     else
       context.errors = "Sorry but couldn't find any vides for #{query}."

@@ -21,6 +21,10 @@ class Video < ApplicationRecord
     where(played_at: nil)
   end
 
+  def self.pending
+    unplayed.oldest_first
+  end
+
   def self.played
     where("played_at IS NOT NULL")
   end
@@ -40,4 +44,3 @@ class Video < ApplicationRecord
     self.youtube_id = CGI.parse(URI.parse(url).query)["v"].first
   end
 end
-

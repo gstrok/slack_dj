@@ -1,5 +1,4 @@
 <div class="container">
-  <% if @dj.finished? %>
   <div class="alert alert--notice">
     <h1>Welcome to SlackDJ</h1>
     <p>Currently there are no videos to play.</p>
@@ -7,13 +6,16 @@
     <p>Then reload this page to start playing.</p>
     <p>For more options type <em>/dj help</em></p>
   </div>
-  <% end %>
 
   <div class="player-wrapper">
     <div class="video-background">
       <div class="video-foreground">
         <div id="player"></div>
       </div>
+    </div>
+    <div class="video-info">
+      <ul id="pending_videos">
+      </ul>
     </div>
   </div>
 </div>
@@ -32,6 +34,10 @@ player = {
     this._player.stopVideo();
   },
 
+  pending: function( videos ) {
+    window.App.player.pending( videos );
+  },
+
   initializePlayer: function(videoId){
     return new YT.Player('player', {
       height: '390',
@@ -48,7 +54,7 @@ player = {
   },
 
   onPlayerReady: function(event) {
-    event.target.playVideo();
+    //event.target.playVideo();
   },
 
   onPlayerStateChange: function(event) {
@@ -66,17 +72,17 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var videoId;
-
+var videoId, pendingVideos;
 <% if @dj.playing? %>
 videoId = '<%= @dj.current_video.youtube_id %>';
 <% end %>
-
+pendingVideos = <%= raw @dj.pending_videos.to_json %>;
 
 function onYouTubeIframeAPIReady() {
   if (!_.isNil(videoId)){
     console.log("frame ready", videoId);
     player.play(videoId);
+    player.pending(pendingVideos);
   }
 }
 </script>
