@@ -6,8 +6,8 @@
     # Called when the subscription has been terminated by the server
 
   received: (data) ->
-    if data.nextVideoId
-      window.player.play(data.nextVideoId);
+    if data.nextVideo
+      window.player.play(data.nextVideo);
       $('.alert').hide()
     else if data.pendingVideos
       this.pending( data.pendingVideos )
@@ -24,10 +24,9 @@
 
   pending: (videos)->
     list = $("#pending_videos");
-    videoInfo = $('.video-info');
-    videoInfo.hide();
+    list.hide();
     list.empty();
     if videos.length
       for v in videos
         list.append('<li>' + v.title + '</li>')
-      videoInfo.show();
+      list.show();

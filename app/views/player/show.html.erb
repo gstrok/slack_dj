@@ -14,6 +14,8 @@
       </div>
     </div>
     <div class="video-info">
+      <ul id="current_video">
+      </ul>
       <ul id="pending_videos">
       </ul>
     </div>
@@ -22,11 +24,16 @@
 
 <script type="text/javascript">
 player = {
-  play: function(videoId){
+  play: function(video){
     if (_.isNil(this._player)) {
-      this._player = this.initializePlayer(videoId);
+      this._player = this.initializePlayer(video.youtube_id);
     } else {
-      this._player.loadVideoById({videoId: videoId});
+      this._player.loadVideoById({videoId: video.youtube_id});
+    }
+    if( video ) {
+      list = $("#current_video");
+      list.empty();
+      list.append('<li>' + video.title + '</li>')
     }
   },
 
@@ -36,6 +43,10 @@ player = {
 
   pending: function( videos ) {
     window.App.player.pending( videos );
+  },
+
+  current: function( video ) {
+    window.App.player.current( video );
   },
 
   initializePlayer: function(videoId){
@@ -72,16 +83,16 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var videoId, pendingVideos;
+var video, pendingVideos;
 <% if @dj.playing? %>
-videoId = '<%= @dj.current_video.youtube_id %>';
+video = <%= raw @dj.current_video.to_json %>;
 <% end %>
 pendingVideos = <%= raw @dj.pending_videos.to_json %>;
 
 function onYouTubeIframeAPIReady() {
-  if (!_.isNil(videoId)){
-    console.log("frame ready", videoId);
-    player.play(videoId);
+  if (!_.isNil(video.youtube_id)){
+    console.log("frame ready", video.youtube_id);
+    player.play(video);
     player.pending(pendingVideos);
   }
 }

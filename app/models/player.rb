@@ -28,7 +28,7 @@ class Player < ApplicationRecord
   def play!(video)
     Player.transaction do
       if stopped? and set_video(video) and update_attribute(:status, "playing")
-        Cable.broadcast 'player_channel', nextVideoId: video.youtube_id
+        Cable.broadcast 'player_channel', nextVideo: video
         true
       else
         raise PlayerAlreadyPlayingError, "Player #{self.id} is already playing video id:#{video_id}."
