@@ -36,18 +36,17 @@ class DJ
 
   def add_related(user)
     last = playlist.last_played(1).take
-    #search = Yt::Video.new id: last.youtube_id
-    search = Yt::Collections::Videos.new
-    related = search.where( relatedToVideoId: last.youtube_id ).first
-    if related.present?
-      playlist.add_video!(
-        title: related.title,
-        url: "https://www.youtube.com/watch?v=#{related.id}",
-        user: user
-      )
-      return related.title
-    else
-      return false
+    if last.present?
+      search = Yt::Collections::Videos.new
+      related = search.where( relatedToVideoId: last.youtube_id ).first
+      if related.present?
+        playlist.add_video!(
+          title: related.title,
+          url: "https://www.youtube.com/watch?v=#{related.id}",
+          user: user
+        )
+        return related.title
+      end
     end
   end
 
