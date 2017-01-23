@@ -1,11 +1,4 @@
 <div class="container">
-  <div class="alert alert--notice">
-    <h1>Welcome to SlackDJ</h1>
-    <p>Currently there are no videos to play.</p>
-    <p>To add a video type in Slack <em>/dj find michael jackson thriller</em></p>
-    <p>Then reload this page to start playing.</p>
-    <p>For more options type <em>/dj help</em></p>
-  </div>
 
   <div class="player-wrapper">
     <div class="video-background">
@@ -13,40 +6,40 @@
         <div id="player"></div>
       </div>
     </div>
-    <div class="video-info">
-      <ul id="current_video">
-      </ul>
-      <ul id="pending_videos">
-      </ul>
+    <div id="video-info">
+      <p class="title">
+      </p>
+    </div>
+    <div id="pending-info">
+      <p class="title">
+      </p>
     </div>
   </div>
 </div>
 
 <script type="text/javascript">
+
+var songBar = new SongBar('#video-info');
+var nextBar = new SongBar('#pending-info');
+var checkInterval;
+
 player = {
   play: function(video){
-    if (_.isNil(this._player)) {
-      this._player = this.initializePlayer(video.youtube_id);
+    var self = this;
+    if (_.isNil(self._player)) {
+      self._player = self.initializePlayer(video.youtube_id);
     } else {
-      this._player.loadVideoById({videoId: video.youtube_id});
+      self._player.loadVideoById({videoId: video.youtube_id});
     }
     if( video ) {
-      list = $("#current_video");
-      list.empty();
-      list.append('<li>' + video.title + '</li>')
+      songBar.render( video.title );
     }
   },
 
   stop: function(){
-    this._player.stopVideo();
-  },
-
-  pending: function( videos ) {
-    window.App.player.pending( videos );
-  },
-
-  current: function( video ) {
-    window.App.player.current( video );
+    if( !_.isNil(this._player) ) {
+      this._player.stopVideo();
+    }
   },
 
   initializePlayer: function(videoId){
@@ -65,17 +58,33 @@ player = {
   },
 
   onPlayerReady: function(event) {
-    event.target.playVideo();
+    var player = event.target;
+    player.playVideo();
   },
 
   onPlayerStateChange: function(event) {
     if (event.data == YT.PlayerState.ENDED) {
       // TODO emit event and have channel listen for it?
       window.App.player.next(player._player.getVideoData().video_id);
+    } else if(event.data == YT.PlayerState.PLAYING) {
+      clearInterval( checkInterval );
+      var total = player._player.getDuration();
+      var limit = total * 0.5;
+      checkInterval = setInterval( function() {
+        var current = player._player.getCurrentTime();
+        if( current >= limit ) {
+          clearInterval( checkInterval );
+          window.App.player.whats_next();
+        }
+      }, 1000);
     }
-  }
-};
+  },
 
+  renderNextPending: function( video ) {
+    nextBar.render( ["<strong>Next</strong>", video.title].join(" ") );
+  }
+
+};
 
 var tag = document.createElement('script');
 
@@ -83,17 +92,17 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var video, pendingVideos;
+var video;
 <% if @dj.playing? %>
 video = <%= raw @dj.current_video.to_json %>;
 <% end %>
-pendingVideos = <%= raw @dj.pending_videos.to_json %>;
 
 function onYouTubeIframeAPIReady() {
-  if (!_.isNil(video.youtube_id)){
+  if (!_.isNil(video) && !_.isNil(video.youtube_id)){
     console.log("frame ready", video.youtube_id);
     player.play(video);
-    player.pending(pendingVideos);
+  } else {
+    songBar.render("No videos in playlist :(", true);
   }
 }
 </script>

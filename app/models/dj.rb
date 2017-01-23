@@ -72,6 +72,10 @@ class DJ
     end
   end
 
+  def next_up
+    video_selector.pending_next
+  end
+
   private
 
   def video_selector

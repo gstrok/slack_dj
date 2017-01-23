@@ -18,7 +18,7 @@ class Player < ApplicationRecord
   end
 
   def set_video(video)
-    update_attributes(video_id: video.id) and video.played!
+    update_attributes(video_id: video.id) and video.played! if video
   end
 
   def playing?

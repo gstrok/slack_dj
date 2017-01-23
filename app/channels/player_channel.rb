@@ -19,6 +19,16 @@ class PlayerChannel < ApplicationCable::Channel
     puts e.message
   end
 
+  def whats_next
+    puts "HERE!"
+    team = Team.first
+    dj = DJ.new(team.player, team.playlist, team.user_rota)
+    next_up = dj.next_up || { title: "Autoplay.." }
+    ActionCable.server.broadcast 'player_channel', nextPending: next_up
+  rescue StandardError => e
+    puts e.message
+  end
+
   private
 
   def with_authorized_video(video_id)

@@ -9,6 +9,10 @@ class VideoSelector
     each_turns_next_video.first
   end
 
+  def pending_next
+    Video.next_for( user_rota.next_in_line )
+  end
+
   def start
     each_turns_next_video.first
   end

@@ -11,6 +11,10 @@ class UserRota
     team.users.first
   end
 
+  def next_in_line
+    team.users[1] or current_user
+  end
+
   def all
     team.users
   end
