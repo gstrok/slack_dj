@@ -7,7 +7,7 @@ class Video < ApplicationRecord
 
   before_validation :set_youtube_id
 
-  validates :user_id, :youtube_id, presence: true
+  validates :youtube_id, presence: true
 
   def self.oldest_first
     order("created_at ASC")

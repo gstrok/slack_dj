@@ -15,7 +15,7 @@ class ShowHistory
     end
 
     def print
-      user_name = user.name.present? ? user.name : "John Doe"
+      user_name = user.present? ? user.name : "Autoplay"
       video_title = title ? title : "Title unknown"
 
       "#{user_name} - #{video_title}"

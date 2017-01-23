@@ -34,7 +34,7 @@ class DJ
     Video.pending
   end
 
-  def add_related(user)
+  def add_related
     last = playlist.last_played(1).take
     if last.present?
       search = Yt::Collections::Videos.new
@@ -42,8 +42,7 @@ class DJ
       if related.present?
         playlist.add_video!(
           title: related.title,
-          url: "https://www.youtube.com/watch?v=#{related.id}",
-          user: user
+          url: "https://www.youtube.com/watch?v=#{related.id}"
         )
         return related.title
       end
@@ -67,8 +66,8 @@ class DJ
       player.switch!(video_selector.next)
     else
       user_rota.advance_to_next_turn
-      video_title = add_related(user_rota.current_user)
-      video_title if player.stop! and player.play!( Video.next_for(user_rota.current_user) )
+      video_title = add_related
+      video_title if player.stop! and player.play!( Video.pending.first )
     end
   end
 

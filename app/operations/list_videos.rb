@@ -10,7 +10,9 @@ class ListVideos
     if unplayed.any?
       message = []
       unplayed.each do |video, idx|
-        message.push [ video.user.name, video.title ].join(":")
+        line = [ video.title ]
+        line.unshift( video.user.name ) if video.user.present?
+        message.push line.join(":")
       end
       context.message = message.join "\n"
     else

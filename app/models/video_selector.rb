@@ -6,7 +6,7 @@ class VideoSelector
 
   def next
     user_rota.advance_to_next_turn
-    each_turns_next_video.first
+    each_turns_next_video.first || Video.pending.first
   end
 
   def pending_next
@@ -17,7 +17,7 @@ class VideoSelector
   end
 
   def start
-    each_turns_next_video.first
+    each_turns_next_video.first || Video.pending.first
   end
 
   private

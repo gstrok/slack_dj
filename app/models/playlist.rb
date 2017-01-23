@@ -9,7 +9,6 @@ class Playlist < ApplicationRecord
 
   def add_video!(attr={})
     videos.create!(attr)
-    Cable.broadcast 'player_channel', pendingVideos: Video.pending
   end
 
   def any_unplayed?
