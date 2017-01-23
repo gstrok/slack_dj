@@ -10,7 +10,10 @@ class VideoSelector
   end
 
   def pending_next
-    Video.next_for( user_rota.next_in_line )
+    user = user_rota.next_in_line
+    if user
+      Video.next_for( user )
+    end
   end
 
   def start

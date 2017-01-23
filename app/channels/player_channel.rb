@@ -20,7 +20,6 @@ class PlayerChannel < ApplicationCable::Channel
   end
 
   def whats_next
-    puts "HERE!"
     team = Team.first
     dj = DJ.new(team.player, team.playlist, team.user_rota)
     next_up = dj.next_up || { title: "Autoplay.." }

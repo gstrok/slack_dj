@@ -68,7 +68,8 @@ class SlackWebhooksController < ApplicationController
       SelectVideo,
       ListMyVideos,
       ListVideos,
-      CurrentVideo
+      CurrentVideo,
+      NextVideo
     ]
   end
 

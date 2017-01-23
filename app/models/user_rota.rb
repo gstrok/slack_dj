@@ -12,7 +12,18 @@ class UserRota
   end
 
   def next_in_line
-    team.users[1] or current_user
+    users = team.users.to_a
+    first = users.shift()
+    users.push( first )
+    user = nil
+    users.each do |u|
+      video = Video.next_for( u )
+      if video.present?
+        user = u
+        break
+      end
+    end
+    user
   end
 
   def all
