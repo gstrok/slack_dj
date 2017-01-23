@@ -69,7 +69,7 @@ player = {
     } else if(event.data == YT.PlayerState.PLAYING) {
       clearInterval( checkInterval );
       var total = player._player.getDuration();
-      var limit = total * 0.5;
+      var limit = total * 0.9;
       checkInterval = setInterval( function() {
         var current = player._player.getCurrentTime();
         if( current >= limit ) {
