@@ -72,3 +72,20 @@ div#pending-info {
 		margin: 0;
 	}
 }
+
+.alert {
+	border: 1px solid #CDD5D6;
+	margin: auto;
+	background: #D4F0F3;
+	width: 640px;
+	border-radius: 3px;
+	text-align: center;
+
+	p {
+		opacity: 0.6;
+	}
+
+	ul {
+		list-style: none;
+	}
+}
