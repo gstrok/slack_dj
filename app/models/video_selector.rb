@@ -6,7 +6,7 @@ class VideoSelector
 
   def next
     user_rota.advance_to_next_turn
-    each_turns_next_video.first || Video.pending.first
+    each_turns_next_video.first
   end
 
   def pending_next
@@ -17,7 +17,7 @@ class VideoSelector
   end
 
   def start
-    each_turns_next_video.first || Video.pending.first
+    each_turns_next_video.first
   end
 
   private
@@ -26,6 +26,12 @@ class VideoSelector
 
   # TODO optimize with window function?
   def each_turns_next_video
-    user_rota.all.map{ |user| Video.next_for(user) }.compact
+    videos = user_rota.all.map{ |user| Video.next_for(user) }.compact
+    puts videos.any?
+    if videos.any?
+      videos
+    else
+      Video.pending
+    end
   end
 end

@@ -4,6 +4,7 @@ class PlayerController < ApplicationController
 
   def show
     @dj = DJ.new(player, playlist, team.user_rota)
+    @dj.check
     @dj.start! if @dj.waiting?
   end
 

@@ -14,8 +14,14 @@ class DJ
     start! if waiting?
   end
 
+  def check
+    if player.playing? && playlist.videos.unplayed.empty?
+      player.stop!
+    end
+  end
+
   def waiting?
-    player.stopped? and playlist.any_unplayed?
+    player.stopped?
   end
 
   def finished?
@@ -52,8 +58,6 @@ class DJ
   def start!
     if playlist.any_unplayed?
       player.play!(video_selector.start)
-    else
-      raise PlaylistAlreadyEndedError, "Playlist #{playlist.id} already ended"
     end
   end
 
@@ -65,7 +69,6 @@ class DJ
     if playlist.any_unplayed?
       player.switch!(video_selector.next)
     else
-      user_rota.advance_to_next_turn
       video_title = add_related
       video_title if player.stop! and player.play!( Video.pending.first )
     end

@@ -20,7 +20,6 @@ html, body {
 }
 
 .video-background {
-	background: #000;
 	position: fixed;
 	top: 0; right: 0; bottom: 0; left: 0;
 }
@@ -42,13 +41,13 @@ div#video-info {
 	left: 0;
 	margin: 0;
 	width: 100%;
-	border-top: 10px solid #721330;
-	background-color: #343477;
+	border-top: 10px solid #313C74;
+	background-color: #7C84AE;
 	display: none;
 
 	p.title {
 		font-size: 20px;
-		color: #8080B3;
+		color: #070F3A;
 		padding: 20px;
 		margin: 0;
 	}
@@ -61,13 +60,13 @@ div#pending-info {
 	left: 0;
 	margin: 0;
 	width: 100%;
-	border-bottom: 10px solid #0F5738;
-	background-color: #75AF96;
+	border-bottom: 10px solid #226666;
+	background-color: #669999;
 	display: none;
 
 	p.title {
 		font-size: 20px;
-		color: #003A21;
+		color: #003333;
 		padding: 20px;
 		margin: 0;
 	}
