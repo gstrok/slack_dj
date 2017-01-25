@@ -27,7 +27,6 @@ class VideoSelector
   # TODO optimize with window function?
   def each_turns_next_video
     videos = user_rota.all.map{ |user| Video.next_for(user) }.compact
-    puts videos.any?
     if videos.any?
       videos
     else
