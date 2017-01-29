@@ -1,5 +1,6 @@
 class DJ
   class PlaylistAlreadyEndedError < StandardError; end
+  include Amatch
 
   attr_reader :player, :playlist, :user_rota
 
@@ -44,13 +45,18 @@ class DJ
     last = playlist.last_played(1).take
     if last.present?
       search = Yt::Collections::Videos.new
-      related = search.where( relatedToVideoId: last.youtube_id ).first
+      related = search.where( relatedToVideoId: last.youtube_id, order: "viewCount", max_results: 10 )
       if related.present?
+        m = JaroWinkler.new(last.title)
+        matches = related.map do | video |
+          { :video_title => video.title, :video_id => video.id, :score => m.match(video.title) }
+        end
+        best_fit = matches.min_by{|vid| vid[:score]}
         playlist.add_video!(
-          title: related.title,
-          url: "https://www.youtube.com/watch?v=#{related.id}"
+          title: best_fit[:video_title],
+          url: "https://www.youtube.com/watch?v=#{best_fit[:video_id]}"
         )
-        return related.title
+        return best_fit[:video_title]
       end
     end
   end
