@@ -47,8 +47,12 @@ class DJ
       search = Yt::Collections::Videos.new
       related = search.where( relatedToVideoId: last.youtube_id, order: "viewCount", max_results: 10 )
       if related.present?
+        recent = Video.recently_played.pluck(:youtube_id) || []
+        filtered = related.select do |r|
+          recent.exclude? r.id
+        end
         m = JaroWinkler.new(last.title)
-        matches = related.map do | video |
+        matches = filtered.map do | video |
           { :video_title => video.title, :video_id => video.id, :score => m.match(video.title) }
         end
         best_fit = matches.min_by{|vid| vid[:score]}
@@ -76,7 +80,12 @@ class DJ
       player.switch!(video_selector.next)
     else
       video_title = add_related
-      video_title if player.stop! and player.play!( Video.pending.first )
+      if Video.pending.any?
+        player.stop! if player.playing?
+        video_title if player.play!( Video.pending.first )
+      else
+        nil
+      end
     end
   end
 

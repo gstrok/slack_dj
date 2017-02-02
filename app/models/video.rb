@@ -21,6 +21,10 @@ class Video < ApplicationRecord
     where(played_at: nil)
   end
 
+  def self.recently_played
+    self.played.order("played_at DESC").limit(10)
+  end
+
   def self.pending
     unplayed.oldest_first.take(5)
   end

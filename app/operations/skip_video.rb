@@ -30,6 +30,8 @@ class SkipVideo
       next_title = context.dj.switch!
       if next_title
         context.message = [ context.message, "Playing #{ next_title }" ].join(" ")
+      else
+        context.message = "Nothing to play, add some songs to playlist."
       end
     end
   end
